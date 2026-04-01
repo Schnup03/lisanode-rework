@@ -1,0 +1,25 @@
+{
+  "name": "lisanode-rework",
+  "version": "2.0.0",
+  "description": "LisaNode Rework - Production Windows Control Node for OpenClaw",
+  "type": "module",
+  "main": "dist/sidecar.js",
+  "bin": {
+    "lisanode": "dist/sidecar.js"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node --watch src/sidecar.mjs",
+    "start": "node dist/sidecar.js",
+    "test": "node scripts/test-commands.mjs"
+  },
+  "keywords": ["openclaw", "windows", "automation", "node-protocol"],
+  "author": "Lisa Nova",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
