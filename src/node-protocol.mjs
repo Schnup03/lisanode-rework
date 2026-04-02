@@ -104,12 +104,38 @@ export class NodeProtocolClient {
     let data;
     try {
       // Handle both event.data and raw event (cross-platform compatibility)
-      const rawData = event.data || event;
+      // Windows Node.js can send Buffer directly, not just with .data property
+      let rawData;
+      if (event && typeof event === 'object') {
+        // Check if it's a Buffer (Node.js on Windows sends Buffer directly)
+        if (Buffer.isBuffer(event)) {
+          rawData = event;
+        } else if (event.data !== undefined) {
+          // Standard WebSocket message event
+          rawData = event.data;
+        } else {
+          // Fallback to the event object itself
+          rawData = event;
+        }
+      } else {
+        rawData = event;
+      }
+      
       if (!rawData) {
         logger.debug('Empty message received, skipping');
         return;
       }
-      data = JSON.parse(String(rawData));
+      
+      // Convert to string for JSON parsing
+      const msgStr = Buffer.isBuffer(rawData) ? rawData.toString() : String(rawData);
+      
+      // Skip empty messages
+      if (!msgStr || msgStr.trim() === '') {
+        logger.debug('Empty message string, skipping');
+        return;
+      }
+      
+      data = JSON.parse(msgStr);
     } catch (e) {
       logger.warn('Failed to parse message', { raw: String(rawData).slice(0, 200) });
       return;
