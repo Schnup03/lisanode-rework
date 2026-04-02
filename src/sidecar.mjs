@@ -32,8 +32,8 @@ try {
 const CONFIG = {
   gateway: process.env.GATEWAY_URL || 'ws://127.0.0.1:18789',
   token: process.env.GATEWAY_TOKEN || '',
-  displayName: process.env.NODE_NAME || 'LisaNode-Windows',
-  clientId: process.env.CLIENT_ID || 'lisanode-rework',
+  displayName: process.env.NODE_NAME || 'Lisas Pc',
+  clientId: process.env.CLIENT_ID || 'node-host',  // Must match paired device's clientId
   clientVersion: '2.0.0',
   role: 'node',
   logFile: process.env.LOG_FILE || './lisanode-sidecar.log',
