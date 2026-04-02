@@ -103,9 +103,15 @@ export class NodeProtocolClient {
   _onMessage(event) {
     let data;
     try {
-      data = JSON.parse(event.data.toString());
+      // Handle both event.data and raw event (cross-platform compatibility)
+      const rawData = event.data || event;
+      if (!rawData) {
+        logger.debug('Empty message received, skipping');
+        return;
+      }
+      data = JSON.parse(String(rawData));
     } catch (e) {
-      logger.warn('Failed to parse message', { raw: String(event.data).slice(0, 200) });
+      logger.warn('Failed to parse message', { raw: String(rawData).slice(0, 200) });
       return;
     }
 
